@@ -1,6 +1,12 @@
 from random import randint
 import matplotlib.pyplot as plt
-
+while True:
+    try:
+        trials=int(input("Number of trials: "))
+        break
+    except:
+        print("Invalid input.")
+        
 def risk(attack,defense,trials):
     results=[] #initializes the results list
     while len(results)<trials: #this loop will continue running the number of trials asked for by the user are complete
@@ -60,62 +66,32 @@ def risk(attack,defense,trials):
             attackWins+=1 #else add 1 to attackWins
             totalA+=results[x][1] #and add the total number of attack soldiers left alive to totalA
 
-    '''
-    print("Attacker win#: "+str(attackWins))
-    print("Defender win#: "+str(defenseWins))
-    print("---")
-    print("Attackers win "+str(round(attackWins/trials*100,2))+"% of the time")
-    print("Defenders win "+str(round(defenseWins/trials*100,2))+"% of the time")
-    print("---")
-    try:
-        print("Average troops left for attackers when they win: "+str(round(totalA/attackWins,2)))
-    except:
-        print("Average troops left for attackers when they win: NA")
-    try:
-        print("Average troops left for defenders when they win: "+str(round(totalD/defenseWins,2)))
-    except:
-        print("Average troops left for defenders when they win: NA")
-    for x in range(10):
-        print()
-    '''
     return round(attackWins/trials*100,2)
-
-
-'''
-while True:
-    try:
-        attackTroopNumb=int(input("How many troops should be on the attacking side? "))
-        defenseTroopNumb=int(input("How many troops should be on the defending side? "))
-        trialNumb=int(input("How many times should I repeat this scenario? "))
-    except:
-        print("Invalid input. Please enter numbers (e.g. 4) only")
-    risk(attackTroopNumb,defenseTroopNumb,trialNumb)
-'''
 
 points=[]
 for defNumb in range(30):
     for attkNumb in range(5,35,5):
-        points.append((attkNumb,defNumb+1,risk(attkNumb,defNumb,1000)))
+        points.append((attkNumb,defNumb+1,risk(attkNumb,defNumb+1,trials)))
         
 
 plotlist=[]
-usedDefNumb=[]
-'''
+usedAttkNumb=[]
 x=-1
+points.sort()
 for element in points:
-    if element[0] not in usedDefNumb:
-        usedDefNumb.append(element[0])
+    if element[0] not in usedAttkNumb:
+        usedAttkNumb.append(element[0])
         plotlist.append([[],[]])
         x+=1
-    plotlist[x][0].append(element[0])
+    plotlist[x][0].append(element[1])
     plotlist[x][1].append(element[2])
 
-colors=["b","g","r","m","y","k"]
+colors=["b","c","g","r","m","y","k"]
 
 plt.axis([0,30,0,100])
 plt.ylabel('p(attacker winning)')
 plt.xlabel('number of defenders')
 for x in range(len(plotlist)):
     plt.plot(plotlist[x][0],plotlist[x][1],colors[x])
+
 plt.show()
-'''
